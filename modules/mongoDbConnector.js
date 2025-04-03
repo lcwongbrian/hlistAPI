@@ -14,7 +14,7 @@ const surfaceSchema = new Schema({
 
 let Hlist;
 
-module.exports.connect = async () => {
+const initialize = async () => {
     return new Promise(function (resolve, reject) {
         let db = mongoose.createConnection(mongoDBConnectionString);
 
@@ -29,7 +29,7 @@ module.exports.connect = async () => {
     });
 };
 
-module.exports.getSurfaceById = (id) => {
+const getSurfaceById = (id) => {
     return new Promise(async (resolve, reject) => {
         try {
             const res = await Hlist.findOne({
@@ -47,4 +47,9 @@ module.exports.getSurfaceById = (id) => {
             reject();
         }
     });    
+};
+
+module.exports = {
+    initialize,
+    getSurfaceById
 };

@@ -1,7 +1,8 @@
 const express = require("express");
 const dotenv = require("dotenv");
 const cors = require("cors");
-const dbConnector = require("./modules/dbConnector");
+// const mongoDbConnector = require("./modules/mongoDbConnector");
+const pgDbConnector = require("./modules/pgDbConnector");
 
 dotenv.config();
 const app = express();
@@ -12,7 +13,8 @@ app.use(express.json());
 
 const run = async () => {
     try {
-        await dbConnector.connect();
+        // await mongoDbConnector.initialize();
+        await pgDbConnector.initialize();
         app.listen(HTTP_PORT, () => {
             console.log("API listening on: " + HTTP_PORT)
         });
@@ -22,9 +24,18 @@ const run = async () => {
     }
 };
 
+// app.get("/hlist/getSurfaceById/:id", async (req, res) => {
+//     try {
+//         const data = await mongoDbConnector.getSurfaceById(req.params.id);
+//         res.json(data);
+//     } catch (msg) {
+//         res.status(404).json({ error: msg });
+//     }
+// });
+
 app.get("/hlist/getSurfaceById/:id", async (req, res) => {
     try {
-        const data = await dbConnector.getSurfaceById(req.params.id);
+        const data = await pgDbConnector.getSurfaceBinaryById(req.params.id);
         res.json(data);
     } catch (msg) {
         res.status(404).json({ error: msg });
